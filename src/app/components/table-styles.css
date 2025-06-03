@@ -1,0 +1,90 @@
+/* Table styles for RichTextInput component */
+.rich-text-editor table {
+  border-collapse: collapse;
+  margin: 8px 4px;
+  font-size: 14px;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.rich-text-editor table th,
+.rich-text-editor table td {
+  border: 1px solid #e5e7eb;
+  padding: 8px 12px;
+  text-align: left;
+  min-width: 80px;
+}
+
+.rich-text-editor table th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 2px solid #d1d5db;
+}
+
+.rich-text-editor table td {
+  background-color: white;
+  color: #1f2937;
+}
+
+.rich-text-editor table tr:nth-child(even) td {
+  background-color: #f9fafb;
+}
+
+.rich-text-editor table tr:hover td {
+  background-color: #f3f4f6;
+}
+
+/* Make tables display properly inline */
+.rich-text-editor table {
+  display: table;
+  vertical-align: top;
+}
+
+/* Mention styles */
+.rich-text-editor .mention {
+  background-color: #dbeafe;
+  color: #1e40af;
+  padding: 2px 8px;
+  margin: 0 2px;
+  border-radius: 6px;
+  font-weight: 500;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.rich-text-editor .mention:hover {
+  background-color: #bfdbfe;
+  color: #1d4ed8;
+}
+
+/* Mention dropdown styles */
+.mention-dropdown {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  overflow: hidden;
+}
+
+.mention-dropdown .mention-item {
+  transition: all 0.15s ease;
+}
+
+.mention-dropdown .mention-item:hover {
+  background-color: #f3f4f6;
+}
+
+.mention-dropdown .mention-item.selected {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+/* Ensure proper z-index for dropdown */
+.mention-dropdown {
+  z-index: 1000;
+}
