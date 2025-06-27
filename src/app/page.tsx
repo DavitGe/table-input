@@ -9,6 +9,29 @@ export default function Home() {
   const [basicContent, setBasicContent] = useState("");
   const [enhancedContent, setEnhancedContent] = useState("");
   const [mentionsContent, setMentionsContent] = useState("");
+  const [copiedText, setCopiedText] = useState<string | null>(null);
+
+  const copyToClipboard = async (text: string, label: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedText(label);
+      setTimeout(() => setCopiedText(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
+  };
+
+  const employeeData = `Name	Department	Salary	Years
+John Doe	Engineering	75000	3
+Jane Smith	Marketing	65000	5
+Bob Johnson	Sales	55000	2
+Alice Brown	HR	60000	7`;
+
+  const salesData = `Month	Revenue	Units	Growth
+January	$50,000	1,200	+5%
+February	$45,000	1,100	-10%
+March	$60,000	1,400	+33%
+April	$55,000	1,300	-8%`;
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
@@ -224,31 +247,133 @@ export default function Home() {
               </h3>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
-                  <h4 className="font-medium text-gray-900 mb-2">
-                    Employee Data:
-                  </h4>
-                  <div className="bg-gray-100 p-4 rounded-lg font-mono text-sm">
-                    <div>Name Department Salary Years</div>
-                    <div>John Doe Engineering 75000 3</div>
-                    <div>Jane Smith Marketing 65000 5</div>
-                    <div>Bob Johnson Sales 55000 2</div>
-                    <div>Alice Brown HR 60000 7</div>
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-medium text-gray-900">
+                      Employee Data:
+                    </h4>
+                    <button
+                      onClick={() =>
+                        copyToClipboard(employeeData, "Employee Data")
+                      }
+                      className="px-3 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors flex items-center gap-1"
+                    >
+                      {copiedText === "Employee Data" ? (
+                        <>
+                          <svg
+                            className="w-3 h-3"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                          Copied!
+                        </>
+                      ) : (
+                        <>
+                          <svg
+                            className="w-3 h-3"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                            />
+                          </svg>
+                          Copy
+                        </>
+                      )}
+                    </button>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg font-mono text-sm text-gray-900">
+                    <div className="whitespace-pre-line">
+                      {employeeData.split("\n").map((line, index) => (
+                        <div
+                          key={index}
+                          className={
+                            index === 0
+                              ? "font-semibold text-gray-800 border-b border-gray-300 pb-1 mb-1"
+                              : ""
+                          }
+                        >
+                          {line}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-medium text-gray-900 mb-2">
-                    Sales Data:
-                  </h4>
-                  <div className="bg-gray-100 p-4 rounded-lg font-mono text-sm">
-                    <div>Month Revenue Units Growth</div>
-                    <div>January $50,000 1,200 +5%</div>
-                    <div>February $45,000 1,100 -10%</div>
-                    <div>March $60,000 1,400 +33%</div>
-                    <div>April $55,000 1,300 -8%</div>
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-medium text-gray-900">Sales Data:</h4>
+                    <button
+                      onClick={() => copyToClipboard(salesData, "Sales Data")}
+                      className="px-3 py-1 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors flex items-center gap-1"
+                    >
+                      {copiedText === "Sales Data" ? (
+                        <>
+                          <svg
+                            className="w-3 h-3"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                          Copied!
+                        </>
+                      ) : (
+                        <>
+                          <svg
+                            className="w-3 h-3"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                            />
+                          </svg>
+                          Copy
+                        </>
+                      )}
+                    </button>
+                  </div>
+                  <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg font-mono text-sm text-gray-900">
+                    <div className="whitespace-pre-line">
+                      {salesData.split("\n").map((line, index) => (
+                        <div
+                          key={index}
+                          className={
+                            index === 0
+                              ? "font-semibold text-gray-800 border-b border-gray-300 pb-1 mb-1"
+                              : ""
+                          }
+                        >
+                          {line}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
-              <p className="text-sm text-gray-500 mt-3">
+              <p className="text-sm text-gray-600 mt-3">
                 Copy any sample data above and paste it into any input to see
                 table functionality. In the mentions version, try typing "@"
                 followed by a name!
