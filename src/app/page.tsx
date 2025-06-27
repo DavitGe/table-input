@@ -375,8 +375,8 @@ April	$55,000	1,300	-8%`;
               </div>
               <p className="text-sm text-gray-600 mt-3">
                 Copy any sample data above and paste it into any input to see
-                table functionality. In the mentions version, try typing "@"
-                followed by a name!
+                table functionality. In the mentions version, try typing
+                &quot;@&quot; followed by a name!
               </p>
             </div>
           </div>

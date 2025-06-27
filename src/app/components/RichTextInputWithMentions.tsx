@@ -47,7 +47,6 @@ const RichTextInputWithMentions: React.FC<RichTextInputWithMentionsProps> = ({
     null
   );
   const [showMentions, setShowMentions] = useState(false);
-  const [mentionQuery, setMentionQuery] = useState("");
   const [mentionPosition, setMentionPosition] = useState({ top: 0, left: 0 });
   const [filteredMentions, setFilteredMentions] = useState<Mention[]>([]);
   const [selectedMentionIndex, setSelectedMentionIndex] = useState(0);
@@ -151,19 +150,22 @@ const RichTextInputWithMentions: React.FC<RichTextInputWithMentionsProps> = ({
     return query;
   };
 
-  const filterMentions = (query: string): Mention[] => {
-    if (onMentionSearch) {
-      return onMentionSearch(query);
-    }
+  const filterMentions = useCallback(
+    (query: string): Mention[] => {
+      if (onMentionSearch) {
+        return onMentionSearch(query);
+      }
 
-    if (!query) return mentions;
+      if (!query) return mentions;
 
-    return mentions.filter(
-      (mention) =>
-        mention.name.toLowerCase().includes(query.toLowerCase()) ||
-        mention.email?.toLowerCase().includes(query.toLowerCase())
-    );
-  };
+      return mentions.filter(
+        (mention) =>
+          mention.name.toLowerCase().includes(query.toLowerCase()) ||
+          mention.email?.toLowerCase().includes(query.toLowerCase())
+      );
+    },
+    [mentions, onMentionSearch]
+  );
 
   const insertMention = (mention: Mention) => {
     if (!mentionRange || !editorRef.current) return;
@@ -188,7 +190,6 @@ const RichTextInputWithMentions: React.FC<RichTextInputWithMentionsProps> = ({
 
     // Hide mentions dropdown
     setShowMentions(false);
-    setMentionQuery("");
     setMentionRange(null);
 
     if (onChange) {
@@ -196,12 +197,12 @@ const RichTextInputWithMentions: React.FC<RichTextInputWithMentionsProps> = ({
     }
   };
 
-  const clearTableSelection = () => {
+  const clearTableSelection = useCallback(() => {
     if (selectedTable) {
       selectedTable.style.outline = "";
       setSelectedTable(null);
     }
-  };
+  }, [selectedTable]);
 
   const deleteSelectedTable = () => {
     if (selectedTable && selectedTable.parentNode) {
@@ -273,7 +274,6 @@ const RichTextInputWithMentions: React.FC<RichTextInputWithMentionsProps> = ({
     const query = detectMentionTrigger();
 
     if (query !== null) {
-      setMentionQuery(query);
       const filtered = filterMentions(query);
       setFilteredMentions(filtered);
       setSelectedMentionIndex(0);
@@ -284,14 +284,13 @@ const RichTextInputWithMentions: React.FC<RichTextInputWithMentionsProps> = ({
       }
     } else {
       setShowMentions(false);
-      setMentionQuery("");
     }
 
     if (onChange && editorRef.current) {
       onChange(editorRef.current.innerHTML);
     }
     checkEmpty();
-  }, [onChange, showMentions]);
+  }, [onChange, showMentions, filterMentions]);
 
   const checkEmpty = () => {
     if (editorRef.current) {
@@ -342,7 +341,6 @@ const RichTextInputWithMentions: React.FC<RichTextInputWithMentionsProps> = ({
 
       if (e.key === "Escape") {
         setShowMentions(false);
-        setMentionQuery("");
         return;
       }
     }
@@ -397,7 +395,7 @@ const RichTextInputWithMentions: React.FC<RichTextInputWithMentionsProps> = ({
 
     document.addEventListener("click", handleGlobalClick);
     return () => document.removeEventListener("click", handleGlobalClick);
-  }, []);
+  }, [clearTableSelection]);
 
   return (
     <div className="relative">

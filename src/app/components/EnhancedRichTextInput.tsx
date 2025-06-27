@@ -59,12 +59,12 @@ const EnhancedRichTextInput: React.FC<EnhancedRichTextInputProps> = ({
     return table;
   };
 
-  const clearTableSelection = () => {
+  const clearTableSelection = useCallback(() => {
     if (selectedTable) {
       selectedTable.style.outline = "";
       setSelectedTable(null);
     }
-  };
+  }, [selectedTable]);
 
   const deleteSelectedTable = () => {
     if (selectedTable && selectedTable.parentNode) {
@@ -210,7 +210,7 @@ const EnhancedRichTextInput: React.FC<EnhancedRichTextInputProps> = ({
 
     document.addEventListener("click", handleGlobalClick);
     return () => document.removeEventListener("click", handleGlobalClick);
-  }, []);
+  }, [clearTableSelection]);
 
   return (
     <div className="relative">
